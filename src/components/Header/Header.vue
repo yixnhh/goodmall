@@ -70,6 +70,7 @@ export default {
       //   },
       // });
 			const {msg}=this
+			const query=this.$route.query
 			const location={
 				name:'Search',
 			}
@@ -78,9 +79,7 @@ export default {
 				location.params={
 					msg
 				}
-				location.query={
-					msgg:msg
-				}
+				query?location.query=query:""
 				this.$router.push(location)
 			}
     },

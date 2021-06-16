@@ -8,15 +8,14 @@
 <script>
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
-import {reqBaseCategoryList} from "./api/index"
 export default {
 	components:{
 		Header,
 		Footer
 		},
-		async mounted() {
-			const result=await reqBaseCategoryList()
-			console.log('result',result);
+	 mounted() {
+			this.$store.dispatch('getBaseCategoryList')
+			
 		},
 }
 </script>

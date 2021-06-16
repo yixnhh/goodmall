@@ -1,33 +1,41 @@
 /* 
 vuex管理的home模块
 */
-import {reqBaseCategoryList} from '@/api'
+import { reqBaseCategoryList,reqBanners } from '@/api'
 
 const state = {
-  baseCategoryList: [], // 所有分类的数组
-  xxx: 'abc',
-  yyy: 123
+	baseCategoryList: [], // 所有分类的数组
+	banners: []
 }
 
 const mutations = {
-  /* 
-  接收保存分类列表
-  */
-  RECEIVE_BASE_CATEGORY_LIST(state, list) {
-    state.baseCategoryList = list
-  }
+	/* 
+	接收保存分类列表
+	*/
+	RECEIVE_BASE_CATEGORY_LIST(state, list) {
+		state.baseCategoryList = list
+	},
+	RECEIVE_BANNERS(state, list) {
+		state.banners = list
+	}
 }
 
 const actions = {
-  /* 
-  异步获取商品三级分类列表
-  */
-  async getBaseCategoryList({ commit }) {
-    const result = await reqBaseCategoryList();
-    if (result.code === 200) {
-      commit('RECEIVE_BASE_CATEGORY_LIST', result.data)
-    }
-  },
+	/* 
+	异步获取商品三级分类列表
+	*/
+	async getBaseCategoryList({ commit }) {
+		const result = await reqBaseCategoryList();
+		if (result.code === 200) {
+			commit('RECEIVE_BASE_CATEGORY_LIST', result.data)
+		}
+	},
+	async getBanners({ commit }) {
+		const result = await reqBanners();
+		if (result.code === 200) {
+			commit('RECEIVE_BANNERS', result.data)
+		}
+	},
 }
 
 const getters = {
@@ -35,8 +43,8 @@ const getters = {
 }
 
 export default {
-  state,
-  actions,
-  mutations,
-  getters
+	state,
+	actions,
+	mutations,
+	getters
 }

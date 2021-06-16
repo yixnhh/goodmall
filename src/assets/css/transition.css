@@ -1,0 +1,17 @@
+.sort-enter{
+opacity: 0 !important;
+height: 0px !important;
+}
+.sort-enter-active{
+	transition: all .5s linear !important;
+}
+.sort-enter-to {
+	opacity: 1 !important;
+	height: 461px !important;
+}
+
+.sort-leave-active{transition: all .5s linear !important;}
+.sort-leave-to{
+	opacity: 0 !important;
+	height: 0px !important;
+}
