@@ -1,11 +1,12 @@
 /* 
 vuex管理的home模块
 */
-import { reqBaseCategoryList,reqBanners } from '@/api'
+import { reqBaseCategoryList,reqBannerList,reqFloorList } from '@/api'
 
 const state = {
 	baseCategoryList: [], // 所有分类的数组
-	banners: []
+	bannerList: [],
+	floorList:[]
 }
 
 const mutations = {
@@ -16,7 +17,10 @@ const mutations = {
 		state.baseCategoryList = list
 	},
 	RECEIVE_BANNERS(state, list) {
-		state.banners = list
+		state.bannerList = list
+	},
+	RECEIVE_FLOORLIST(state,list){
+		state.floorList=list
 	}
 }
 
@@ -30,12 +34,18 @@ const actions = {
 			commit('RECEIVE_BASE_CATEGORY_LIST', result.data)
 		}
 	},
-	async getBanners({ commit }) {
-		const result = await reqBanners();
-		if (result.code === 200) {
-			commit('RECEIVE_BANNERS', result.data)
+	async getBannerList({commit}){
+		const {data,code}=await reqBannerList()
+		if(code===200){
+			commit('RECEIVE_BANNERS',data)
 		}
 	},
+	async getFloorList({commit}){
+		const result=await reqFloorList()
+		if(result.code===200){
+			commit('RECEIVE_FLOORLIST',result.data)
+		}
+	}
 }
 
 const getters = {
