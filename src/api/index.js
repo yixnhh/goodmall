@@ -9,3 +9,11 @@ export const reqBaseCategoryList = ()=>ajax.get('/product/getBaseCategoryList')
 export const reqBannerList=()=>mockAjax.get('/banner')
 // 提供所有楼层数据的接口
 export const reqFloorList=()=>mockAjax.get('/floor')
+
+export const reqSearchInfo=(searchParams)=>{
+	return ajax({
+		url:'/list',
+		method:'post',
+		data:searchParams
+	})
+}
