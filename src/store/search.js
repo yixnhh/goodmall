@@ -16,7 +16,15 @@ async getSearchInfo({commit},searchParams){
 }
 }
 const getters={
-
+attrsList(state){
+	return state.searchInfo.attrsList||[] 
+},
+goodsList(state){
+	return state.searchInfo.goodsList||[]
+},
+trademarkList(state){
+	return state.searchInfo.trademarkList||[]
+}
 }
 export default {
 	state,
