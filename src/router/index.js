@@ -49,10 +49,9 @@ const routes = [
 		}
 	},
 	{
-		path:'/search/:msg?',
+		path:'/search/:keyword?',
 		name:'Search',
 		component:Search,
-	props:route=>({key1:route.params.msg,key2:route.query.msgg,key3:route.query.categoryName,key4:route.query.category1Id,key5:route.query.category2Id,key6:route.query.category3Id}),
 	meta:{
 		isShowFooter:true
 	}

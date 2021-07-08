@@ -36,7 +36,7 @@
             type="text"
             id="autocomplete"
             class="input-error input-xxlarge"
-            v-model="msg"
+            v-model="keyword"
           />
           <button
             class="sui-btn btn-xlarge btn-danger"
@@ -56,7 +56,7 @@ export default {
   name: "Header",
   data() {
     return {
-      msg: "",
+      keyword: "",
     };
   },
   methods: {
@@ -69,19 +69,19 @@ export default {
       //     msg: this.msg,
       //   },
       // });
-			const {msg}=this
-			const query=this.$route.query
-			const location={
+		let {keyword}=this
+		let query=this.$route.query
+		let location={
 				name:'Search',
+				params:{
+					keyword:keyword?keyword:undefined
+				}
 			}
       // this.$router.push(`search/${this.msg}?1`)
-			if(msg.trim()){
-				location.params={
-					msg
-				}
+			  // keyword?location.params=keyword:""
 				query?location.query=query:""
 				this.$router.push(location)
-			}
+				this.keyword=""
     },
   },
 };

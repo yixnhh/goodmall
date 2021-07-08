@@ -11,10 +11,8 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}</li>
+            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i>×</i></li>
           </ul>
         </div>
 
@@ -121,16 +119,58 @@ import Footer from '../../components/Footer/Footer.vue'
       SearchSelector,
         Footer
     },
+		data(){
+       return {
+				 searchParams:{
+					 category1Id:"",
+					 category2Id:"",
+					 category3Id:"",
+					 categoryName:"",
+					 keyword:"",
+					 props:[],
+					 trademark:"",
+					 order:"1:desc",
+					 pageNo:1,
+					 pageSize:10
+				 }
+			 }
+		},
+		beforeMount(){
+     	this.handlerSearchParams()
+		},
 		mounted(){
 			this.getSearchInfo()
 		},
 		methods:{
 			getSearchInfo(){
-			this.$store.dispatch('getSearchInfo',{})
+			this.$store.dispatch('getSearchInfo',this.searchParams)
+			},
+			handlerSearchParams(){
+				 let {category1Id,
+					 category2Id,
+					 category3Id,
+					 categoryName}=this.$route.query
+					 let {keyword}=this.$route.params
+					 let searchParams={
+						 ...this.searchParams,
+					 category1Id,
+					 category2Id,
+					 category3Id,
+					 categoryName,
+					 keyword
+					 }
+					 this.searchParams=searchParams
 			}
+
 		},
 		computed:{
 			...mapGetters(['goodsList'])
+		},
+		watch:{
+			$route(newVal,oldVal){
+					this.handlerSearchParams()
+					 this.getSearchInfo()
+			}
 		}
   }
 </script>
