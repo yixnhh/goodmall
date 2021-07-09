@@ -11,13 +11,13 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}</li>
-            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removecategoryname">×</i></li>
+            <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removekeyword">×</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @searchTrade="searchTrade" />
 
         <!--details-->
         <div class="details clearfix">
@@ -145,8 +145,10 @@ import Footer from '../../components/Footer/Footer.vue'
 			getSearchInfo(){
 			this.$store.dispatch('getSearchInfo',this.searchParams)
 			},
+			//处理参数
 			handlerSearchParams(){
-				 let {category1Id,
+				 let {
+					 category1Id,
 					 category2Id,
 					 category3Id,
 					 categoryName}=this.$route.query
@@ -160,6 +162,33 @@ import Footer from '../../components/Footer/Footer.vue'
 					 keyword
 					 }
 					 this.searchParams=searchParams
+			},
+			removecategoryname(){
+				this.searchParams.categoryName=undefined
+				this.searchParams.category1Id=undefined
+				this.searchParams.category2Id=undefined
+				this.searchParams.category3Id=undefined
+				     	
+							// this.getSearchInfo()
+							// 改变路径
+						this.$router.push({
+							name:'Search',
+							params:this.$route.params
+						})
+			},
+			//删除关键字搜索条件，重新发送请求
+			removekeyword(){
+      this.searchParams.keyword=undefined
+			this.$bus.$emit('clearKeyword')
+			   	// this.getSearchInfo()
+					 this.$router.push({
+						 name:'Search',
+						 query:this.$route.query
+					 })
+			},
+			searchTrade(trade){
+          this.searchParams.trademark=`${trade.tmId}:${trade.tmName}`
+						this.getSearchInfo()
 			}
 
 		},

@@ -12,6 +12,9 @@ Vue.component('TypeNav',TypeNav)
 Vue.component('SlideLoop',SlideLoop)
 
 new Vue({
+	beforeCreate(){
+   Vue.prototype.$bus=this
+	},
   router,
   store,
   render: h => h(App)
