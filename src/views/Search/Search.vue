@@ -13,11 +13,13 @@
           <ul class="fl sui-tag">
             <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removecategoryname">×</i></li>
             <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removekeyword">×</i></li>
+						 <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.slice(2)}}<i @click="removetrademark">×</i></li>
+						  <li class="with-x" v-for="(prop,index) in searchParams.props" :key="prop">{{prop.split(':')[1]}}<i @click="removeprops(index)">×</i></li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @searchTrade="searchTrade" />
+        <SearchSelector @searchTrade="searchTrade" @searchForProps="searchForProps" />
 
         <!--details-->
         <div class="details clearfix">
@@ -186,10 +188,27 @@ import Footer from '../../components/Footer/Footer.vue'
 						 query:this.$route.query
 					 })
 			},
+			removetrademark(){
+       this.searchParams.trademark=undefined
+					this.getSearchInfo()
+			},
+			removeprops(index){
+				this.searchParams.props.splice(index,1)
+				this.getSearchInfo()
+			},
 			searchTrade(trade){
           this.searchParams.trademark=`${trade.tmId}:${trade.tmName}`
 						this.getSearchInfo()
-			}
+			},
+			 searchForProps(att,attr){
+				 let prop=`${attr.attrId}:${att}:${attr.attrName}`
+				 let isRepeate=this.searchParams.props.some(item=>item===prop)
+				 if(isRepeate){
+					 return
+				 }
+				 this.searchParams.props.push(prop)
+				 this.getSearchInfo()
+			 }
 
 		},
 		computed:{

@@ -17,7 +17,7 @@
       <div class="fl value">
         <ul class="type-list">
           <li v-for="att in attr.attrValueList" :key="att">
-            <a>{{att}}</a>
+            <a href="javascript:;" @click="searchForProps(att,attr)">{{att}}</a>
           </li>
         </ul>
       </div>
@@ -37,7 +37,10 @@ import { mapGetters } from 'vuex'
 			//传给父
     searchTrade(trade){
     this.$emit('searchTrade',trade)
- }			
+ },
+ searchForProps(att,attr){
+	 this.$emit('searchForProps',att,attr)
+ }		
 		}
   }
 </script>
