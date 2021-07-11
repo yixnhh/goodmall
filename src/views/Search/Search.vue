@@ -26,24 +26,21 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li :class="{active:searchParams.order.split(':')[0]==='1'}">
+                  <a href="#" @click.prevent="changeSort('1')">综合
+										<i v-if="searchParams.order.split(':')[0]==='1'" 
+									class="iconfont" 
+									:class="{iconup:searchParams.order.split(':')[1]==='asc',icondown:searchParams.order.split(':')[1]==='desc'}">
+									</i></a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
-                </li>
+                <li :class="{active:searchParams.order.split(':')[0]==='2'}">
+                  <a href="#" @click.prevent="changeSort('2')">价格
+								<i v-if="searchParams.order.split(':')[0]==='2'" 
+									class="iconfont" 
+									:class="{iconup:searchParams.order.split(':')[1]==='asc',icondown:searchParams.order.split(':')[1]==='desc'}">
+									</i>
+									</a>
+                </li>    
               </ul>
             </div>
           </div>
@@ -131,7 +128,7 @@ import Footer from '../../components/Footer/Footer.vue'
 					 keyword:"",
 					 props:[],
 					 trademark:"",
-					 order:"1:desc",
+					 order:"1:asc",
 					 pageNo:1,
 					 pageSize:10
 				 }
@@ -163,6 +160,11 @@ import Footer from '../../components/Footer/Footer.vue'
 					 categoryName,
 					 keyword
 					 }
+					 Object.keys(searchParams).forEach(key=>{
+						 if(searchParams[key]===''){
+							 delete searchParams[key]
+						 }
+					 })
 					 this.searchParams=searchParams
 			},
 			removecategoryname(){
@@ -173,7 +175,7 @@ import Footer from '../../components/Footer/Footer.vue'
 				     	
 							// this.getSearchInfo()
 							// 改变路径
-						this.$router.push({
+						this.$router.replace({
 							name:'Search',
 							params:this.$route.params
 						})
@@ -183,7 +185,7 @@ import Footer from '../../components/Footer/Footer.vue'
       this.searchParams.keyword=undefined
 			this.$bus.$emit('clearKeyword')
 			   	// this.getSearchInfo()
-					 this.$router.push({
+					 this.$router.replace({
 						 name:'Search',
 						 query:this.$route.query
 					 })
@@ -208,6 +210,21 @@ import Footer from '../../components/Footer/Footer.vue'
 				 }
 				 this.searchParams.props.push(prop)
 				 this.getSearchInfo()
+			 },
+			 changeSort(sortflag){
+         let originSortFlag=this.searchParams.order.split(':')[0]
+				 let originSortType=this.searchParams.order.split(':')[1]
+				 let newOrder=null
+				 if(sortflag===originSortFlag){
+					 //假设点击的是同一个
+            newOrder=`${originSortFlag}:${originSortType==='asc'?'desc':'asc'}`
+				 }
+				 else{
+					 //排序标志改变，排序类型默认
+					 newOrder=`${sortflag}:desc`
+				 }
+          this.searchParams.order=newOrder
+					this.getSearchInfo()
 			 }
 
 		},

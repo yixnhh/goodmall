@@ -117,7 +117,11 @@ export default {
       category2id ? (query.category2Id = category2id) : "";
       category3id ? (query.category3Id = category3id) : "";
           location.query=query
-      this.$router.push(location);
+					if(this.$route.path!=='/'){
+						 this.$router.replace(location);
+					}else{
+              this.$router.push(location);
+					}
       this.yinIt();
       //  console.log(categoryname);
     },

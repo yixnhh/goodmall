@@ -83,7 +83,11 @@ export default {
       // this.$router.push(`search/${this.msg}?1`)
 			  // keyword?location.params=keyword:""
 				query?location.query=query:""
-				this.$router.push(location)
+				if(this.$route.path!=='/'){
+						 this.$router.replace(location);
+					}else{
+              this.$router.push(location);
+					}
 				this.keyword=""
     },
 		clearKeyword(){
