@@ -13,7 +13,7 @@
           <ul class="fl sui-tag">
             <li class="with-x" v-if="searchParams.categoryName">{{searchParams.categoryName}}<i @click="removecategoryname">×</i></li>
             <li class="with-x" v-if="searchParams.keyword">{{searchParams.keyword}}<i @click="removekeyword">×</i></li>
-						 <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.slice(2)}}<i @click="removetrademark">×</i></li>
+						 <li class="with-x" v-if="searchParams.trademark">{{searchParams.trademark.split(':')[1]}}<i @click="removetrademark">×</i></li>
 						  <li class="with-x" v-for="(prop,index) in searchParams.props" :key="prop">{{prop.split(':')[1]}}<i @click="removeprops(index)">×</i></li>
           </ul>
         </div>
@@ -72,33 +72,12 @@
             </ul>
           </div>
           <div class="fr page">
-            <div class="sui-pagination clearfix">
-              <ul>
-                <li class="prev disabled">
-                  <a href="#">«上一页</a>
-                </li>
-                <li class="active">
-                  <a href="#">1</a>
-                </li>
-                <li>
-                  <a href="#">2</a>
-                </li>
-                <li>
-                  <a href="#">3</a>
-                </li>
-                <li>
-                  <a href="#">4</a>
-                </li>
-                <li>
-                  <a href="#">5</a>
-                </li>
-                <li class="dotted"><span>...</span></li>
-                <li class="next">
-                  <a href="#">下一页»</a>
-                </li>
-              </ul>
-              <div><span>共10页&nbsp;</span></div>
-            </div>
+         <Pagination 
+				 :currentPageNum="searchParams.pageNo"
+				 :pageSize="searchParams.pageSize"
+				 :total="searchInfo.total"
+				 :continueNum="5"
+				 />
           </div>
         </div>
       </div>
@@ -110,7 +89,7 @@
 <script>
 import Footer from '../../components/Footer/Footer.vue'
   import SearchSelector from './SearchSelector/SearchSelector'
-	import {mapGetters} from 'vuex'
+	import {mapGetters, mapState} from 'vuex'
   export default {
     name: 'Search',
 
@@ -229,7 +208,10 @@ import Footer from '../../components/Footer/Footer.vue'
 
 		},
 		computed:{
-			...mapGetters(['goodsList'])
+			...mapGetters(['goodsList']),
+			...mapState({
+				searchInfo:state=>state.search.searchInfo
+			})
 		},
 		watch:{
 			$route(newVal,oldVal){
