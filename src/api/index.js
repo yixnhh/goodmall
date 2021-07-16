@@ -17,3 +17,10 @@ export const reqSearchInfo=(searchParams)=>{
 		data:searchParams
 	})
 }
+
+export const reqDetailInfo=(skuId)=>{
+	return ajax({
+		url:`/item/${skuId}`,
+		method:'get'
+	})
+}

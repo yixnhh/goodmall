@@ -49,7 +49,8 @@
               <li class="yui3-u-1-5" v-for="goods in goodsList" :key="goods.id">
                 <div class="list-wrap">
                   <div class="p-img">
-                    <a href="item.html" target="_blank"><img :src="goods.defaultImg" /></a>
+                    <!-- <a href="item.html" target="_blank"><img :src="goods.defaultImg" /></a> -->
+										<router-link :to="'/detail/'+goods.id"><img :src="goods.defaultImg" /></router-link>
                   </div>
                   <div class="price">
                     <strong>
@@ -58,7 +59,8 @@
                     </strong>
                   </div>
                   <div class="attr">
-                    <a target="_blank" href="item.html" title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】">{{goods.title}}</a>
+                    <!-- <a target="_blank" href="item.html" title="促销信息，下单即赠送三个月CIBN视频会员卡！【小米电视新品4A 58 火爆预约中】">{{goods.title}}</a> -->
+										<router-link :to="'/detail/'+goods.id">{{goods.title}}</router-link>
                   </div>
                   <div class="commit">
                     <i class="command">已有<span>2000</span>人评价</i>
@@ -77,12 +79,12 @@
 				 :pageSize="searchParams.pageSize"
 				 :total="searchInfo.total"
 				 :continueNum="5"
+				 @changeNum="changeNum"
 				 />
           </div>
         </div>
       </div>
     </div>
-		<Footer></Footer>
   </div>
 </template>
 
@@ -154,6 +156,7 @@ import Footer from '../../components/Footer/Footer.vue'
 				     	
 							// this.getSearchInfo()
 							// 改变路径
+							this.searchParams.pageNo=1
 						this.$router.replace({
 							name:'Search',
 							params:this.$route.params
@@ -164,6 +167,7 @@ import Footer from '../../components/Footer/Footer.vue'
       this.searchParams.keyword=undefined
 			this.$bus.$emit('clearKeyword')
 			   	// this.getSearchInfo()
+					this.searchParams.pageNo=1
 					 this.$router.replace({
 						 name:'Search',
 						 query:this.$route.query
@@ -171,14 +175,17 @@ import Footer from '../../components/Footer/Footer.vue'
 			},
 			removetrademark(){
        this.searchParams.trademark=undefined
+			 				this.searchParams.pageNo=1
 					this.getSearchInfo()
 			},
 			removeprops(index){
 				this.searchParams.props.splice(index,1)
+								this.searchParams.pageNo=1
 				this.getSearchInfo()
 			},
 			searchTrade(trade){
           this.searchParams.trademark=`${trade.tmId}:${trade.tmName}`
+									this.searchParams.pageNo=1
 						this.getSearchInfo()
 			},
 			 searchForProps(att,attr){
@@ -187,6 +194,7 @@ import Footer from '../../components/Footer/Footer.vue'
 				 if(isRepeate){
 					 return
 				 }
+				 				this.searchParams.pageNo=1
 				 this.searchParams.props.push(prop)
 				 this.getSearchInfo()
 			 },
@@ -203,7 +211,12 @@ import Footer from '../../components/Footer/Footer.vue'
 					 newOrder=`${sortflag}:desc`
 				 }
           this.searchParams.order=newOrder
+									this.searchParams.pageNo=1
 					this.getSearchInfo()
+			 },
+			 changeNum(pageNo){
+				 this.searchParams.pageNo=pageNo
+				 this.getSearchInfo()
 			 }
 
 		},

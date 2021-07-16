@@ -4,7 +4,7 @@ import Home from '../views/Home/Home.vue'
 import Login from '../views/Login/Login.vue'
 import Register from '../views/Register/Register.vue'
 import Search from '../views/Search/Search.vue'
-
+import Detail from '../views/Detail/Detail.vue'
 Vue.use(VueRouter)
 // 缓存原型上的push函数
 const originPush = VueRouter.prototype.push
@@ -30,14 +30,17 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: Home,
+		meta:{
+			isShowFooter:true
+		}
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
 		meta:{
-			isShowFooter:true
+			isShowFooter:false
 		}
   },
 	{
@@ -45,7 +48,7 @@ const routes = [
 		name:'Resiger',
 		component:Register,
 		meta:{
-			isShowFooter:true
+			isShowFooter:false
 		}
 	},
 	{
@@ -55,13 +58,24 @@ const routes = [
 	meta:{
 		isShowFooter:true
 	}
+	},
+	{
+		path:'/detail/:goodsId?',
+		name:'Detail',
+		component:Detail,
+		meta:{
+			isShowFooter:true
+		}
 	}
 ]
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes
+  routes,
+	scrollBehavior (to, from, savedPosition) {
+		return { x: 0, y: 0 }
+	}
 })
 
 export default router
