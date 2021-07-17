@@ -5,6 +5,7 @@ import Login from '../views/Login/Login.vue'
 import Register from '../views/Register/Register.vue'
 import Search from '../views/Search/Search.vue'
 import Detail from '../views/Detail/Detail.vue'
+import AddCartSuccess from '../views/AddCartSuccess/AddCartSuccess.vue'
 Vue.use(VueRouter)
 // 缓存原型上的push函数
 const originPush = VueRouter.prototype.push
@@ -65,6 +66,14 @@ const routes = [
 		component:Detail,
 		meta:{
 			isShowFooter:true
+		}
+	},
+	{
+		path:'/addcartsuccess',
+		name:'AddCartSuccess',
+		component:AddCartSuccess,
+		meta:{
+			isShowFooter:false
 		}
 	}
 ]

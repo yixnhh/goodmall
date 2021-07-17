@@ -4,6 +4,7 @@ import home from './home'
 import user from './user'
 import search from './search'
 import detail from './detail'
+import shopcar from './shopcar'
 Vue.use(Vuex)
 const state={
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
 		home,
 		user,
 		search,
-		detail
+		detail,
+		shopcar
 	}
 })

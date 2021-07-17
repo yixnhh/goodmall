@@ -66,20 +66,21 @@
               <dl v-for="spuSale in spuSaleAttrList" :key="spuSale.id">
                 <dt class="title">{{spuSale.saleAttrName}}</dt>
                 <dd changepirce="0" 
-								v-for="(attr,index) in spuSale.spuSaleAttrValueList" 
+								v-for="attr in spuSale.spuSaleAttrValueList" 
 								:key="attr.id"
-			
+								:class="{active:attr.isChecked==='1'}"
+                @click="changeChecked(spuSale.spuSaleAttrValueList,attr)"
 								>{{attr.saleAttrValueName}}</dd>
               </dl>
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt">
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input autocomplete="off" class="itxt" v-model="count" @change="$event.target.value<1?count=1:count=$event.target.value">
+                <a href="javascript:" class="plus" @click="count++">+</a>
+                <a href="javascript:" class="mins" @click="count>1?count--:count=count">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addShopCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -344,6 +345,7 @@ import { mapGetters } from 'vuex'
 		data(){
     return{
 			skuId:'',
+			count:'1'
 	
 		}
 		},
@@ -357,8 +359,20 @@ import { mapGetters } from 'vuex'
 			getDetailInfo(){
 				this.$store.dispatch('getDetailInfo',this.skuId)
 			},
-			addActive(index,sp){
-	
+	    changeChecked(spuSaleAttrValueList,spuSaleAttrValue){
+				spuSaleAttrValueList.forEach(element => {
+					element.isChecked='0'
+				});
+				spuSaleAttrValue.isChecked='1'
+			},
+		async addShopCart(){
+			try{
+					const result=await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.skuId,skuNum:this.count})
+					sessionStorage.setItem('SKUINFO_KEY',JSON.stringify(this.skuInfo))
+					this.$router.push('/addcartsuccess?skuNum='+this.count)
+			}catch(error){
+             alert(error.message)
+			}
 			}
 		},
 		computed:{
