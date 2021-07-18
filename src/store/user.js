@@ -1,5 +1,7 @@
-const state={
+import {getUUID} from '@/util'
 
+const state={
+   userTempId:getUUID()
 }
 const mutations={
 

@@ -367,13 +367,14 @@ import { mapGetters } from 'vuex'
 			},
 		async addShopCart(){
 			try{
-					const result=await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.skuId,skuNum:this.count})
+					const error=await this.$store.dispatch('addOrUpdateShopCart',{skuId:this.skuId,skuNum:this.count})
 					sessionStorage.setItem('SKUINFO_KEY',JSON.stringify(this.skuInfo))
-					this.$router.push('/addcartsuccess?skuNum='+this.count)
+				error?alert(error):this.$router.push('/addcartsuccess?skuNum='+this.count)
 			}catch(error){
-             alert(error.message)
+             alert(error)
 			}
-			}
+			},
+		
 		},
 		computed:{
 			...mapGetters(['categoryView','skuInfo','spuSaleAttrList']),

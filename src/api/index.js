@@ -31,3 +31,12 @@ export const reqAddOrUpdateShopCart=(skuId,skuNum)=>{
 			method:'post'
 	})
 }
+
+export const reqDeleteShopCart=(skuId)=>{
+	return ajax({
+		url:`/cart/deleteCart/${skuId}`,
+		method:'delete'
+	})
+}
+
+export const getGoodsFromCart=()=>ajax.get(`/cart/cartList`)
