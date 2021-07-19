@@ -39,4 +39,9 @@ export const reqDeleteShopCart=(skuId)=>{
 	})
 }
 
-export const getGoodsFromCart=()=>ajax.get(`/cart/cartList`)
+export const getGoodsFromCart=()=>{
+	return ajax({
+		url:'/cart/cartList',
+		method:'get'
+	})
+}

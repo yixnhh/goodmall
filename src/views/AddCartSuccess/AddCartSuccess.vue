@@ -32,6 +32,7 @@
 		},
 		mounted(){
 			 this.skuInfo=JSON.parse(sessionStorage.getItem('SKUINFO_KEY'))
+
 		}
   }
 </script>

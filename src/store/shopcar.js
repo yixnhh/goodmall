@@ -39,6 +39,9 @@ async  reqGoodsFromCart({commit}){
 }
 }
 const getters={
+	cartInfo(state){
+		return state.cartGoods[0] ||{}
+	}
 
 }
 export default {
