@@ -25,10 +25,17 @@ export const reqDetailInfo=(skuId)=>{
 	})
 }
 
+
 export const reqAddOrUpdateShopCart=(skuId,skuNum)=>{
 	return ajax({
       url:`/cart/addToCart/${skuId}/${skuNum}`,
 			method:'post'
+	})
+}
+export const reqUpdateCartIscheck=(skuId,isChecked)=>{
+	return ajax({
+		url:`/cart/checkCart/${skuId}/${isChecked}`,
+		method:'GET'
 	})
 }
 
