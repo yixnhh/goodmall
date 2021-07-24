@@ -171,7 +171,7 @@ export default {
    async updateOneCheck(goods){
      try {
         await this.$store.dispatch('updateCartIscheck', {skuId:goods.skuId,isChecked:goods.isChecked?0:1});
-        alert('666')
+        alert('修改成功')
         this.reqGoodsFromCart()
      } catch (error) {
        console.log(error.message);

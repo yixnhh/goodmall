@@ -24,8 +24,6 @@ export const reqDetailInfo=(skuId)=>{
 		method:'get'
 	})
 }
-
-
 export const reqAddOrUpdateShopCart=(skuId,skuNum)=>{
 	return ajax({
       url:`/cart/addToCart/${skuId}/${skuNum}`,
@@ -52,3 +50,4 @@ export const getGoodsFromCart=()=>{
 		method:'get'
 	})
 }
+
