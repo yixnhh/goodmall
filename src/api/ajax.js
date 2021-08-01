@@ -10,6 +10,7 @@ import nProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store'
 
+
 /* 1. 配置通用的基础路径和超时 */
 const service = axios.create({
   baseURL: '/api', // 基础路径

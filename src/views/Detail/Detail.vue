@@ -4,7 +4,7 @@
     <TypeNav />
 
     <!-- 主要内容区域 -->
-    <section class="con">
+    <section class="con" >
       <!-- 导航路径区域 -->
       <div class="conPoin">
         <span>{{categoryView.category1Name}}</span>
@@ -331,13 +331,13 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+  import './ImageList/ImageList.vue'
+  import { mapGetters } from 'vuex'
   import ImageList from './ImageList/ImageList'
   import Zoom from './Zoom/Zoom'
 
   export default {
     name: 'Detail',
-    
     components: {
       ImageList,
       Zoom

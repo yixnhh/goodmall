@@ -48,7 +48,7 @@
             <span class="sum">{{ goods.skuNum * goods.cartPrice }}</span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
+            <a href="javascript:;" class="sindelet" @click="deleteOne(goods)">删除</a>
             <br />
             <a href="#none">移到收藏</a>
           </li>
@@ -61,7 +61,7 @@
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a  href="javascript:;" @click="deleteCheckedAll" >删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
@@ -168,6 +168,7 @@ export default {
         alert(error.message);
       }
     },
+    //单个修改购物车选中状态
    async updateOneCheck(goods){
      try {
         await this.$store.dispatch('updateCartIscheck', {skuId:goods.skuId,isChecked:goods.isChecked?0:1});
@@ -176,7 +177,27 @@ export default {
      } catch (error) {
        console.log(error.message);
      }
+    },
+    //删除单个购物车数据
+    async deleteOne(goods){
+        try {
+           await this.$store.dispatch('deleteShopCart',goods.skuId)
+           this.reqGoodsFromCart()
+        } catch (error) {
+          alert(error)
+        }
+    },
+    //删除多个
+    async deleteCheckedAll(){
+      try {
+        await this.$store.dispatch('deleteShopCartAll')
+        alert('删除成功')
+        this.reqGoodsFromCart()
+      } catch (error) {
+            alert('删除失败')
+      }
     }
+
   },
   mounted() {
     this.reqGoodsFromCart();

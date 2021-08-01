@@ -9,6 +9,7 @@ import "@/assets/css/transition.css"
 import '@/mock/mockServer'
 import 'swiper/css/swiper.css'
 
+
 Vue.config.productionTip = false
 Vue.component('TypeNav',TypeNav)
 Vue.component('SlideLoop',SlideLoop)
