@@ -51,3 +51,19 @@ export const getGoodsFromCart=()=>{
 	})
 }
 
+//用户注册
+export const reqRegister = (userInfo) => ajax.post('/user/passport/register',userInfo)
+
+//获取验证码
+export const reqRegisterCode=(phone)=>{
+	return ajax({
+		url:`/user/passport/sendCode/${phone}`,
+		method:'get'
+	})
+}
+
+//登录
+export const reqLogin=(userInfo)=>ajax.post('/user/passport/login',userInfo)
+
+//获取当前用户信息
+export const reqUserInfo=()=>ajax.get('/user/passport/auth/getUserInfo')

@@ -90,13 +90,20 @@ const routes = [
 	}
 ]
 
+
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes,
+  //配置滚动行为，跳转到新的路由界面滚动条位置
 	scrollBehavior (to, from, savedPosition) {
 		return { x: 0, y: 0 }
 	}
+})
+
+//注册全局前置导航守卫，用来对token校验（根据token获取用户信息）
+router.beforeEach((to, from, next) => {
+let token=store.state.user.token
 })
 
 export default router
