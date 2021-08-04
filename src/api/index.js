@@ -67,3 +67,17 @@ export const reqLogin=(userInfo)=>ajax.post('/user/passport/login',userInfo)
 
 //获取当前用户信息
 export const reqUserInfo=()=>ajax.get('/user/passport/auth/getUserInfo')
+
+//退出登录
+export const loginOut=()=>ajax.get('/user/passport/logout')
+
+//获取用户地址
+export const reqUserAddressList=()=>{
+	return ajax({
+		url:'/user/userAddress/auth/findUserAddressList',
+		method:'get'
+	})
+}
+
+//获取订单交易页面信息
+export const reqTradeInfo=()=>ajax.get('/order/auth/trade')

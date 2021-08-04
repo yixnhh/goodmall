@@ -7,6 +7,11 @@ import Search from '../views/Search/Search.vue'
 import Detail from '../views/Detail/Detail.vue'
 import AddCartSuccess from '../views/AddCartSuccess/AddCartSuccess.vue'
 import ShopCart from '../views/ShopCart'
+import Pay from '../views/Pay'
+import PaySuccess from '../views/PaySuccess'
+import Trade from '../views/Trade'
+
+import store from '@/store'
 Vue.use(VueRouter)
 // 缓存原型上的push函数
 const originPush = VueRouter.prototype.push
@@ -87,7 +92,31 @@ const routes = [
 		meta:{
 			isShowFooter:false
 		}
-	}
+	},
+	{
+		path:'/pay',
+		name:'Pay',
+		component:Pay,
+		meta:{
+			isShowFooter:false
+		}
+	},
+	{
+		path:'/paysuccess',
+		name:'PaySuccess',
+		component:PaySuccess,
+		meta:{
+			isShowFooter:false
+		}
+	},
+	{
+		path:'/trade',
+		name:'Trade',
+		component:Trade,
+		meta:{
+			isShowFooter:false
+		}
+	},
 ]
 
 
@@ -102,8 +131,32 @@ const router = new VueRouter({
 })
 
 //注册全局前置导航守卫，用来对token校验（根据token获取用户信息）
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 let token=store.state.user.token
+let userInfo=store.state.user.userInfo.nickName
+if(token){
+	//token存在，代表用户登录过
+	if(to.path==='/login'){
+		next('/')
+	}else{
+		if(userInfo){
+			next()
+		}else{
+			try {
+				await store.dispatch('getUserInfo')
+				next()
+			} catch (error) {
+				//token过期
+				//把用户token清除
+				store.dispatch('toLoginOut')
+				next('/login')
+			}
+		}
+	}
+}else{
+	//用户没登录
+	next()
+}
 })
 
 export default router

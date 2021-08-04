@@ -5,10 +5,14 @@
       <div class="container">
         <div class="loginList">
           <p>尚品汇欢迎您！</p>
-          <p>
+          <p v-if="$store.state.user.userInfo.nickName">
+            <span>{{$store.state.user.userInfo.name}}</span>
+            <a href="javascript:;" @click="loginOut" class="register">退出</a>
+          </p>
+          <p v-else>
             <span>请</span>
-            <router-link to="/Login">登录</router-link>
-           <router-link to="/Resiger" class="register">免费注册</router-link>
+            <router-link to="/login">登录</router-link>
+            <router-link to="/resiger" class="register">免费注册</router-link>
           </p>
         </div>
         <div class="typeList">
@@ -59,40 +63,49 @@ export default {
       keyword: "",
     };
   },
-	mounted(){
-   this.$bus.$on("clearKeyword",this.clearKeyword)
-	},
+  mounted() {
+    this.$bus.$on("clearKeyword", this.clearKeyword);
+  },
   methods: {
     toSearch() {
       // this.$router.push({
       //   name: "Search",
-      //   query: { msgg: this.msg 
-			// 	},
+      //   query: { msgg: this.msg
+      // 	},
       //   params: {
       //     msg: this.msg,
       //   },
       // });
-		let {keyword}=this
-		let query=this.$route.query
-		let location={
-				name:'Search',
-				params:{
-					keyword:keyword?keyword:undefined
-				}
-			}
+      let { keyword } = this;
+      let query = this.$route.query;
+      let location = {
+        name: "Search",
+        params: {
+          keyword: keyword ? keyword : undefined,
+        },
+      };
       // this.$router.push(`search/${this.msg}?1`)
-			  // keyword?location.params=keyword:""
-				query?location.query=query:""
-				if(this.$route.path!=='/'){
-						 this.$router.replace(location);
-					}else{
-              this.$router.push(location);
-					}
-				this.keyword=""
+      // keyword?location.params=keyword:""
+      query ? (location.query = query) : "";
+      if (this.$route.path !== "/") {
+        this.$router.replace(location);
+      } else {
+        this.$router.push(location);
+      }
+      this.keyword = "";
     },
-		clearKeyword(){
-			this.keyword=''
-		}
+    clearKeyword() {
+      this.keyword = "";
+    },
+    async loginOut(){
+       try {
+         await this.$store.dispatch('toLoginOut')
+         alert('退出成功')
+         this.$router.push('/')
+       } catch (error) {
+         alert(error)
+       }
+    }
   },
 };
 </script>

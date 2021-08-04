@@ -21,7 +21,11 @@ service.interceptors.request.use((config)=>{
 //显示进度条
 config.headers["userTempId"]=store.state.user.userTempId
 nProgress.start()
-
+//登录成功后，需要把token带在请求头中
+let token=store.state.user.token
+if(token){
+	config.headers.token=token
+}
 
 return config
 })

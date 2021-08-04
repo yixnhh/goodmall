@@ -80,7 +80,8 @@
           if(phone&&password){
             try {
                 await this.$store.dispatch('login',{phone,password})
-                alert('登录成功')    
+                alert('登录成功')  
+                this.$router.push("/")  
             } catch (error) {
               console.log(error);
             }
