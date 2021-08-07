@@ -10,6 +10,9 @@ import ShopCart from '../views/ShopCart'
 import Pay from '../views/Pay'
 import PaySuccess from '../views/PaySuccess'
 import Trade from '../views/Trade'
+import Center from '../views/Center'
+import GroupOrder from '../views/Center/GroupOrder'
+import MyOrder from '../views/Center/MyOrder'
 
 import store from '@/store'
 Vue.use(VueRouter)
@@ -113,6 +116,28 @@ const routes = [
 		path:'/trade',
 		name:'Trade',
 		component:Trade,
+		meta:{
+			isShowFooter:false
+		}
+	},
+	{
+		path:'/center',
+		name:'Center',
+		component:Center,
+		children:[
+			{
+				path:'myorder',
+				component:MyOrder
+			},
+			{
+				path:'grouporder',
+				component:GroupOrder
+			},
+			{
+				path:'',
+				redirect:'myorder'
+			}
+		],
 		meta:{
 			isShowFooter:false
 		}

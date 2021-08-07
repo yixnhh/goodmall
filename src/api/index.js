@@ -81,3 +81,28 @@ export const reqUserAddressList=()=>{
 
 //获取订单交易页面信息
 export const reqTradeInfo=()=>ajax.get('/order/auth/trade')
+
+//请求提交创建订单
+export const reqSubmitOrder = (tradeNo,tradeInfo)=>{
+	return ajax({
+		url:`/order/auth/submitOrder?tradeNo=${tradeNo}`,
+		method:'post',
+		data:tradeInfo
+	})
+}
+
+//请求获取支付信息
+export const reqPayInfo=(orderId)=>{
+	return ajax({
+		url:`/payment/weixin/createNative/${orderId}`,
+		method:'get'
+	})
+}
+
+//查询订单支付状态
+export const reqPayStatus=(orderId)=>{
+	return ajax({
+		url:`/payment/weixin/queryPayStatus/${orderId}`,
+		method:'get'
+	})
+}
