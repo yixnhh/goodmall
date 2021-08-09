@@ -106,3 +106,6 @@ export const reqPayStatus=(orderId)=>{
 		method:'get'
 	})
 }
+
+//获取我的订单
+export const reqMyOrder=(page,limit)=>ajax.get(`/order/auth/${page}/${limit}`)

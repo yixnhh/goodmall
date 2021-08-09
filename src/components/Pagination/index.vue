@@ -25,16 +25,34 @@
     </button>
 
     <button v-if="startEnd.end < totalPageNum - 1">···</button>
-    <button v-if="startEnd.end !== totalPageNum" @click="$emit('changeNum', totalPageNum)">{{ totalPageNum }}</button>
-    <button :disabled="currentPageNum === totalPageNum" @click="$emit('changeNum', currentPageNum + 1)">下一页</button>
+    <button
+      v-if="startEnd.end !== totalPageNum"
+      @click="$emit('changeNum', totalPageNum)"
+    >
+      {{ totalPageNum }}
+    </button>
+    <button
+      :disabled="currentPageNum === totalPageNum"
+      @click="$emit('changeNum', currentPageNum + 1)"
+    >
+      下一页
+    </button>
 
     <button style="margin-left: 30px">共 {{ total }} 条</button>
+    <span>跳至</span>
+    <input type="text" v-model="page" @keyup.enter="changePage" />
+    <span>页</span>
   </div>
 </template>
 
 <script>
 export default {
   name: "Pagination",
+  data() {
+    return {
+      page: null,
+    };
+  },
   props: {
     currentPageNum: Number,
     pageSize: Number,
@@ -45,6 +63,16 @@ export default {
     continueNum: {
       type: Number,
       required: true,
+    },
+  },
+  methods: {
+    changePage() {
+      if(parseInt(this.page)>=1&&parseInt(this.page)<=this.totalPageNum){
+      this.$emit("changeNum", parseInt(this.page));
+      }else{
+         this.$message.warning("请输入正确页码");
+      }
+      this.page = "";
     },
   },
   computed: {
@@ -77,13 +105,13 @@ export default {
       return { start, end };
     },
   },
-  
 };
 </script>
 
 <style lang="less" scoped>
 .pagination {
-  button {
+  button,
+  input {
     margin: 0 5px;
     background-color: #f4f4f5;
     color: #606266;
@@ -109,6 +137,15 @@ export default {
       background-color: #409eff;
       color: #fff;
     }
+  }
+  input {
+    width: 70px;
+  }
+  span {
+    margin: 0 20px;
+    display: inline-block;
+    height: 28px;
+    line-height: 28px;
   }
 }
 </style>

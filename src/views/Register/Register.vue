@@ -10,19 +10,33 @@
       </h3>
       <div class="content">
         <label>手机号:</label>
-        <input type="text" placeholder="请输入你的手机号" v-model="phone" />
-        <span class="error-msg">错误提示信息</span>
+        <input
+          type="text"
+          placeholder="请输入你的手机号"
+          v-model="phone"
+          name="phone"
+          v-validate="{ required: true, regex: /^1[34578]\d{9}$/ }"
+          :class="{ invalid: errors.has('phone') }"
+        />
+        <span class="error-msg">{{ errors.first("phone") }}</span>
       </div>
       <div class="content">
         <label>验证码:</label>
-        <input type="text" placeholder="请输入验证码" v-model="code" />
+        <input
+          type="text"
+          placeholder="请输入验证码"
+          v-model="code"
+          name="code"
+          v-validate="{ required: true, regex: /^\d{6}$/ }"
+          :class="{ incalid: errors.has('code') }"
+        />
         <input
           type="button"
-          value="获取验证码"
+          :value="codeTest"
           style="padding: 5px; width: 80px; background: #4cb9fc; color: #eef8fe"
           @click="getCode"
         />
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errors.first("code") }}</span>
       </div>
       <div class="content">
         <label>登录密码:</label>
@@ -30,8 +44,11 @@
           type="text"
           placeholder="请输入你的登录密码"
           v-model="password"
+          name="password"
+          v-validate="{ required: true, regex: /^[0-9 A-Z a-z]{6,20}$/ }"
+          :class="{ incalid: errors.has('password') }"
         />
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errors.first("password") }}</span>
       </div>
       <div class="content">
         <label>确认密码:</label>
@@ -39,8 +56,11 @@
           type="text"
           placeholder="请输入确认密码"
           v-model="surePassword"
+          name="surePassword"
+          v-validate="{ required: true, is: password }"
+          :class="{ incalid: errors.has('surePassword') }"
         />
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errors.first("surePassword") }}</span>
       </div>
       <div class="content">
         <label>昵 称:</label>
@@ -53,12 +73,18 @@
         />
       </div>
       <div class="controls">
-        <input name="m1" type="checkbox" />
+        <input
+          name="isCheck"
+          type="checkbox"
+          v-model="isCheck"
+          :class="{ invalid: errors.has('isCheck') }"
+          v-validate="{ agree: true }"
+        />&nbsp;
         <span>同意协议并注册《尚品汇用户协议》</span>
-        <span class="error-msg">错误提示信息</span>
+        <span class="error-msg">{{ errors.first("isCheck") }}</span>
       </div>
       <div class="btn">
-        <button @click="goRegister">完成注册</button>
+        <button @click="goRegister">{{ registerBtn }}</button>
       </div>
     </div>
 
@@ -90,41 +116,68 @@ export default {
       surePassword: "",
       code: "",
       nickName: "",
+      isCheck: "",
+      registerBtn: "马上注册",
+      sending: true, //是否发送验证码
+      second: 60, //倒计时间
+      codeTest: "获取验证码",
     };
   },
   methods: {
+    //发送验证码倒计时
+    timeDown() {
+      let result = setInterval(() => {
+        --this.second;
+        this.codeTest = this.second;
+        if (this.second < 1) {
+          clearInterval(result);
+          this.sending = true;
+          this.second = 60;
+          this.codeTest = "获取验证码";
+        }
+      }, 1000);
+    },
     async getCode() {
+      if (!this.sending) return;
+      if (!/^1[34578]\d{9}$/.test(this.phone)) {
+        this.$message.error("手机号码不正确");
+        return;
+      }
       try {
+        this.sending = false;
         await this.$store.dispatch("getCode", this.phone);
         this.code = this.$store.state.user.code;
+        this.timeDown();
       } catch (error) {
+        clearInterval(result);
         alert(error);
       }
     },
     async goRegister() {
-      let { phone, password, surePassword, code, nickName } = this;
-      if (
-        phone &&
-        password &&
-        surePassword &&
-        code &&
-        nickName &&
-        surePassword === password
-      ) {
+      //点击完成注册首先对所有的表单做整体验证，验证通过返回true，没通过返回false
+      const success = await this.$validator.validateAll();
+      if (success) {
+        if (this.registerBtn == "正在提交...") {
+          this.$message.error("重复提交");
+          return;
+        }
         try {
+          let {code,nickName,password,phone}=this
+          this.registerBtn = "正在提交...";
           await this.$store.dispatch("register", {
-            "code": code,
-            "nickName": nickName,
-            "password": password,
-            "phone": phone,
+            code: code,
+            nickName: nickName,
+            password: password,
+            phone: phone,
           });
           alert("注册成功");
           this.$router.push("/login");
         } catch (error) {
+          this.registerBtn = "马上注册";
           alert(error);
         }
       } else {
-        alert("输入不允许有空项");
+        this.$message.error("输入不允许有空项");
       }
     },
   },

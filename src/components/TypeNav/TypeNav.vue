@@ -91,7 +91,6 @@ export default {
     moveInItem: throttle(
       function (index) {
         this.current = index;
-        console.log(index);
       },
       200,
       { trailing: false }
